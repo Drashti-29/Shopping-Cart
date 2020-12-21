@@ -1,90 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="index.css" />
     <script>
-      let count = 0;
+      let srNo = 1;
+      let total = 0;
       function insertItem() {
-        const title = document.getElementById("item-name-input").value;
-        const price = document.getElementById("item-price-input").value;
-        const table = document.getElementsByTagName("table")[0];
-        const row = document.createElement("tr");
-        const sr = document.createElement("td");
-        const name = document.createElement("td");
-        const myprice = document.createElement("td");
+        let gname = document.getElementById("item-name-input").value;
+        let gvalue = document.getElementById("item-price-input").value;
 
-        sr.innerHTML = ++count;
-        row.appendChild(sr);
-        name.innerHTML = title;
-        row.appendChild(name);
-        myprice.innerHTML = price;
-        row.appendChild(myprice);
-
-        const rowCount = table.rows.length;
-        table.deleteRow(rowCount - 1);
-
-        const titleLen = title.trim();
-        const priceLen = price.trim();
-
-        if (titleLen.length > 0 && priceLen.length > 0) {
-          table.appendChild(row);
+        if (!isNaN(gname)) {
+          alert("Must input name");
+          return false;
         }
-        //document.getElementById("item-name-input").value="";
-        //document.getElementById("item-price-input").value="";
-
-        const totalPrice = document.querySelectorAll(
-          '[data-ns-test="item-price"]'
-        );
-        let sum = 0;
-        for (let i = 0; i < totalPrice.length; i++) {
-          sum += Number(totalPrice[i].innerText);
+        if (gvalue == "") {
+          alert("Must input numbers");
+          return false;
         }
-        // console.log(sum);
-        const newRow = document.createElement("tr");
-        const tdcol = document.createElement("td");
-        const itemName = document.createElement("td");
-        const itemPrice = document.createElement("td");
 
-        itemPrice.setAttribute("data-ns-test", "grandTotal");
-        itemName.setAttribute("data-ns-test", "item-name");
-        tdcol.innerHTML = "";
-        itemName.innerText = "GrandTotal";
-        itemPrice.innerText = sum;
-        newRow.appendChild(tdcol);
-        newRow.appendChild(itemName);
-        newRow.appendChild(itemPrice);
-        table.appendChild(newRow);
+        let tr = document.createElement("tr");
+        let td1 = document.createElement("td");
+        let td2 = document.createElement("td");
+        let td3 = document.createElement("td");
+        td1.innerText = srNo++;
+        td2.innerText = gname;
+        td3.innerText = gvalue;
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        td2.setAttribute("data-ns-test", "item-name");
+        td3.setAttribute("data-ns-test", "item-price");
+        document.getElementById("table").appendChild(tr);
+
+        total = total + parseInt(gvalue, 10);
+        document.getElementById("gtotal").innerText = "Grand-Total: " + total;
       }
     </script>
   </head>
   <body>
-    <h1>Grocery List</h1>
+    <div class="heading">
+      <h1>Grocery List</h1>
+    </div>
+    <div class="input">
+      <input
+        type="text"
+        id="item-name-input"
+        placeholder="Enter Grocery name"
+      />
+      <input type="number" id="item-price-input" placeholder="Enter price" />
+    </div>
+    <div class="button">
+      <button onclick="insertItem()">Add</button>
+    </div>
+    <!-- <button onclick="Remove()">Remove</button>
+      <button onclick="Clear all()">Clear all</button> -->
 
-    <input
-      type="text"
-      data-ns-test="item-name"
-      id="item-name-input"
-      placeholder="Product Name"
-    /><br />
-    <br />
-    <input
-      type="number"
-      data-ns-test="item-price"
-      id="item-price-input"
-      placeholder="Price"
-    /><br />
-    <br />
-    <button onclick="insertItem()">Add Item</button>
-    <table>
+    <table id="table">
       <tr>
-        <th>Sr. No.</th>
-        <th>Title</th>
-        <th>Price</th>
-      </tr>
-      <tr>
-        <td></td>
-        <td>grandTotal</td>
-        <td>0</td>
+        <th><b> Sr. No. </b></th>
+        <th><b>Title</b></th>
+        <th><b>Price</b></th>
       </tr>
     </table>
+    <h3 data-ns-test="grandTotal" id="gtotal"><b>Grand-Total: 0</b></h3>
   </body>
 </html>
