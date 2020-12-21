@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>
+      let count = 0;
+      function insertItem() {
+        const title = document.getElementById("item-name-input").value;
+        const price = document.getElementById("item-price-input").value;
+        const table = document.getElementsByTagName("table")[0];
+        const row = document.createElement("tr");
+        const sr = document.createElement("td");
+        const name = document.createElement("td");
+        const myprice = document.createElement("td");
+
+        sr.innerHTML = ++count;
+        row.appendChild(sr);
+        name.innerHTML = title;
+        row.appendChild(name);
+        myprice.innerHTML = price;
+        row.appendChild(myprice);
+
+        const rowCount = table.rows.length;
+        table.deleteRow(rowCount - 1);
+
+        const titleLen = title.trim();
+        const priceLen = price.trim();
+
+        if (titleLen.length > 0 && priceLen.length > 0) {
+          table.appendChild(row);
+        }
+        //document.getElementById("item-name-input").value="";
+        //document.getElementById("item-price-input").value="";
+
+        const totalPrice = document.querySelectorAll(
+          '[data-ns-test="item-price"]'
+        );
+        let sum = 0;
+        for (let i = 0; i < totalPrice.length; i++) {
+          sum += Number(totalPrice[i].innerText);
+        }
+        // console.log(sum);
+        const newRow = document.createElement("tr");
+        const tdcol = document.createElement("td");
+        const itemName = document.createElement("td");
+        const itemPrice = document.createElement("td");
+
+        itemPrice.setAttribute("data-ns-test", "grandTotal");
+        itemName.setAttribute("data-ns-test", "item-name");
+        tdcol.innerHTML = "";
+        itemName.innerText = "GrandTotal";
+        itemPrice.innerText = sum;
+        newRow.appendChild(tdcol);
+        newRow.appendChild(itemName);
+        newRow.appendChild(itemPrice);
+        table.appendChild(newRow);
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Grocery List</h1>
+
+    <input
+      type="text"
+      data-ns-test="item-name"
+      id="item-name-input"
+      placeholder="Product Name"
+    /><br />
+    <br />
+    <input
+      type="number"
+      data-ns-test="item-price"
+      id="item-price-input"
+      placeholder="Price"
+    /><br />
+    <br />
+    <button onclick="insertItem()">Add Item</button>
+    <table>
+      <tr>
+        <th>Sr. No.</th>
+        <th>Title</th>
+        <th>Price</th>
+      </tr>
+      <tr>
+        <td></td>
+        <td>grandTotal</td>
+        <td>0</td>
+      </tr>
+    </table>
+  </body>
+</html>
